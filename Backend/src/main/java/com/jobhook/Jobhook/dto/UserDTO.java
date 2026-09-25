@@ -14,7 +14,7 @@ import lombok.NonNull;
 @NoArgsConstructor
 public class UserDTO {
 
-    private String id;
+    private Long id;
 
     @NotBlank(message = "{user.name.absent}")
     private String name;

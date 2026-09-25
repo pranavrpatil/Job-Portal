@@ -1,0 +1,31 @@
+package com.jobhook.Jobhook.utility;
+
+import com.jobhook.Jobhook.entity.Sequence;
+import com.jobhook.Jobhook.exceptions.JobPortalException;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.stereotype.Component;
+
+@Component
+public class Utilities {
+
+    private static MongoOperations mongoOperations;
+
+    Utilities(MongoOperations mongoOperations){
+        this.mongoOperations = mongoOperations;
+    }
+
+    public static Long getNextSequence(String key) throws JobPortalException {
+        Query query = new Query(Criteria.where("_id").is(key));
+        Update update = new Update();
+        update.inc("seq",1);
+        FindAndModifyOptions options= new FindAndModifyOptions();
+        options.returnNew(true);
+        Sequence sequence = mongoOperations.findAndModify(query,update, options, Sequence.class);
+        if(sequence == null) throw new JobPortalException("Unable to get sequence id for key "+key);
+        return sequence.getSeq();
+    }
+}

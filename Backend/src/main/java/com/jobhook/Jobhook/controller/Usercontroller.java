@@ -2,6 +2,7 @@ package com.jobhook.Jobhook.controller;
 
 import com.jobhook.Jobhook.dto.UserDTO;
 import com.jobhook.Jobhook.entity.UserEntity;
+import com.jobhook.Jobhook.exceptions.JobPortalException;
 import com.jobhook.Jobhook.services.UserService;
 import com.jobhook.Jobhook.services.UserServiceImpl;
 import jakarta.validation.Valid;
@@ -24,7 +25,7 @@ public class Usercontroller {
     }
 
     @PostMapping("/registerUser")
-    public ResponseEntity<UserDTO> registerUser(@RequestBody @Valid UserDTO user){
+    public ResponseEntity<UserDTO> registerUser(@RequestBody @Valid UserDTO user) throws JobPortalException {
         UserDTO savedUser = userService.registerUser(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
