@@ -1,5 +1,6 @@
 package com.jobhook.Jobhook.services;
 
+import com.jobhook.Jobhook.dto.LoginDTO;
 import com.jobhook.Jobhook.dto.UserDTO;
 import com.jobhook.Jobhook.entity.UserEntity;
 import com.jobhook.Jobhook.exceptions.JobPortalException;
@@ -39,5 +40,14 @@ public class UserServiceImpl implements UserService {
         UserEntity user = userDTO.toEntity();
         UserEntity savedUser = userRepository.save(user);
         return savedUser.toDTO();
+    }
+
+    public UserDTO loginUser(LoginDTO loginDTO) throws JobPortalException {
+        UserEntity existingUser = userRepository.findByEmail(loginDTO.getEmail()).orElseThrow(()->new JobPortalException("NOT_FOUND"));
+        boolean isMatch = passwordEncoder.matches(loginDTO.getPassword(), existingUser.getPassword());
+        if(!isMatch){
+           throw new JobPortalException("INVALID_CREDENTIALS");
+        }
+        return existingUser.toDTO();
     }
 }
