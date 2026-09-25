@@ -1,7 +1,9 @@
 package com.jobhook.Jobhook.controller;
 
+import com.jobhook.Jobhook.dto.LoginDTO;
 import com.jobhook.Jobhook.dto.UserDTO;
 import com.jobhook.Jobhook.entity.UserEntity;
+import com.jobhook.Jobhook.exceptions.JobPortalException;
 import com.jobhook.Jobhook.services.UserService;
 import com.jobhook.Jobhook.services.UserServiceImpl;
 import jakarta.validation.Valid;
@@ -24,9 +26,15 @@ public class Usercontroller {
     }
 
     @PostMapping("/registerUser")
-    public ResponseEntity<UserDTO> registerUser(@RequestBody @Valid UserDTO user){
+    public ResponseEntity<UserDTO> registerUser(@RequestBody @Valid UserDTO user) throws JobPortalException {
         UserDTO savedUser = userService.registerUser(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    }
+
+    @PostMapping("loginUser")
+    public ResponseEntity<UserDTO> loginUser(@RequestBody @Valid LoginDTO loginDTO) throws JobPortalException {
+        UserDTO user = userService.loginUser(loginDTO);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping
@@ -34,11 +42,7 @@ public class Usercontroller {
         List<UserDTO> allUsers = userService.findAllUser();
         return new ResponseEntity<>(allUsers, HttpStatus.OK);
     }
-//
-//    @PostMapping("/createUser")
-//    public ResponseEntity<UserEntity> addNewUser(@RequestBody UserEntity user){
-//        UserEntity savedUser = userService.createUser(user);
-//        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
-//    }
+
+
 
 }
