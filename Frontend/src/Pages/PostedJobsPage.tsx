@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import PostedJob from "../PostedJobs/PostedJob";
-import PostedJobDesc from "../PostedJobs/PostedJobDesc";
+import PostedJob from "../Components/PostedJobs/PostedJob";
+import PostedJobDesc from "../Components/PostedJobs/PostedJobDesc";
 
 const PostedJobsPage = () => {
     const navigate = useNavigate();
@@ -11,8 +11,8 @@ const PostedJobsPage = () => {
     return <div className="min-h-[90vh] bg-mine-shaft-950 font-['poppins'] px-4">
 
         <div className="flex gap-5">
-            <PostedJob/>
-            <PostedJobDesc/>
+            <PostedJob />
+            <PostedJobDesc />
         </div>
     </div>
 }
