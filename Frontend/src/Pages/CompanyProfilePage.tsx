@@ -1,22 +1,22 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Divider,Button } from "@mantine/core";
-import {IconArrowLeft} from '@tabler/icons-react';
-import CompanyProfile from "../CompanyProfile/CompanyProfile";
+import { Divider, Button } from "@mantine/core";
+import { IconArrowLeft } from '@tabler/icons-react';
+import CompanyProfile from "../Components/CompanyProfile/CompanyProfile";
 import { useEffect } from "react";
-import SimilarCompanies from "../CompanyProfile/SimilarCompanies";
+import SimilarCompanies from "../Components/CompanyProfile/SimilarCompanies";
 
 
-const CompanyProfilePage= ()=>{
+const CompanyProfilePage = () => {
     const navigate = useNavigate();
-    useEffect(()=>{
-        window.scrollTo(0,0);
+    useEffect(() => {
+        window.scrollTo(0, 0);
     })
     return <div className="min-h-[90vh] bg-mine-shaft-950 font-['poppins'] p-4">
-        <Button my="md" onClick={()=>navigate(-1)} leftSection={<IconArrowLeft size={20}/>} color="bright-sun.4" variant="light">Back</Button>
-        
+        <Button my="md" onClick={() => navigate(-1)} leftSection={<IconArrowLeft size={20} />} color="bright-sun.4" variant="light">Back</Button>
+
         <div className="flex gap-5 mx-4 justify-between">
-           <CompanyProfile/> 
-           <SimilarCompanies/>
+            <CompanyProfile />
+            <SimilarCompanies />
         </div>
     </div>
 }

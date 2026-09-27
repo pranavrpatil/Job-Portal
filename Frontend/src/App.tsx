@@ -7,8 +7,8 @@ import { createTheme, MantineProvider, Divider } from '@mantine/core';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from './Pages/HomePage';
 import FindJobs from './Pages/FindJobs';
-import Header from './Header/Header';
-import Footer from './Footer/Footer';
+import Header from './Components/Header/Header';
+import Footer from './Components/Footer/Footer';
 import FindTalentPage from './Pages/FindTalentPage';
 import TalentProfilePage from './Pages/TalentProfilePage';
 import PostJobPage from './Pages/PostJobPage';
@@ -39,21 +39,21 @@ function App() {
         <div className='relative'>
           <Header />
           <Divider size="xs" />
-            <Routes>
-              <Route path='/find-jobs' element={<FindJobs />} />
-              <Route path='/find-talent' element={<FindTalentPage />} />
-              <Route path='/jobs' element={<JobDescPage />} />
-              <Route path='/apply-job' element={<ApplyJobPage />} />
-              <Route path='/post-jobs' element={<PostJobPage />} />
-              <Route path='/posted-jobs' element={<PostedJobsPage />} />
-              <Route path='/company' element={<CompanyProfilePage/>}/>
-              <Route path='/job-history' element={<JobHistoryPage/>}/>
-              <Route path='/login' element={<SignUpPage/>}/>
-              <Route path='/signup' element={<SignUpPage />} />
-              <Route path='/profile' element={<ProfilePage />} />
-              <Route path='/talent-profile' element={<TalentProfilePage />} />
-              <Route path='*' element={<HomePage />} />
-            </Routes>
+          <Routes>
+            <Route path='/find-jobs' element={<FindJobs />} />
+            <Route path='/find-talent' element={<FindTalentPage />} />
+            <Route path='/jobs' element={<JobDescPage />} />
+            <Route path='/apply-job' element={<ApplyJobPage />} />
+            <Route path='/post-jobs' element={<PostJobPage />} />
+            <Route path='/posted-jobs' element={<PostedJobsPage />} />
+            <Route path='/company' element={<CompanyProfilePage />} />
+            <Route path='/job-history' element={<JobHistoryPage />} />
+            <Route path='/login' element={<SignUpPage />} />
+            <Route path='/signup' element={<SignUpPage />} />
+            <Route path='/profile' element={<ProfilePage />} />
+            <Route path='/talent-profile' element={<TalentProfilePage />} />
+            <Route path='*' element={<HomePage />} />
+          </Routes>
           <Footer />
         </div>
       </BrowserRouter>
