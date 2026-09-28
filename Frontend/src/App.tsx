@@ -3,7 +3,9 @@ import '@mantine/core/styles.css';
 import '@mantine/carousel/styles.css';
 import '@mantine/tiptap/styles.css';
 import '@mantine/dates/styles.css';
+import '@mantine/notifications/styles.css';
 import { createTheme, MantineProvider, Divider } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from './Pages/HomePage';
 import FindJobs from './Pages/FindJobs';
@@ -35,6 +37,7 @@ function App() {
   })
   return (
     <MantineProvider defaultColorScheme='dark' theme={theme}>
+      <Notifications position="top-center" zIndex={1000} />
       <BrowserRouter>
         <div className='relative'>
           <Header />

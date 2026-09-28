@@ -1,6 +1,8 @@
 import { rem, TextInput, PasswordInput, Checkbox, Anchor, Button, Radio, Group } from '@mantine/core'
-import { IconAt, IconLock } from '@tabler/icons-react'
+import { IconAt, IconCheck, IconLock, IconX } from '@tabler/icons-react'
+import { notifications } from '@mantine/notifications';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { registerUser } from '../../Services/UserService';
 import { SignUpValidation } from '../../Services/FromValidation';
@@ -14,6 +16,7 @@ const form = {
 }
 const SignUp = () => {
 
+    const navigation = useNavigate();
     const [formData, setFormData] = useState<{ [key: string]: string }>(form);
     const [formError, setFormError] = useState<{ [key: string]: string }>(form);
 
@@ -41,8 +44,8 @@ const SignUp = () => {
                 setFormError({ ...formError, confirmPassword: "" });
             }
         }
-        console.log(formError);
     }
+
     const handleSubmit = async (event: any) => {
         let valid = true, newErrorForm: { [key: string]: string } = {};
         for (let key in formData) {
@@ -52,7 +55,37 @@ const SignUp = () => {
             if (newErrorForm[key]) valid = false;
         }
         setFormError(newErrorForm);
-        if (valid) registerUser(formData).then((response) => console.log(response)).catch((e) => console.log(e.response.data));
+        if (valid) {
+            const response = registerUser(formData)
+                .then((response) => {
+                    setFormData(form);
+                    notifications.show({
+                        title: 'Register Sucessfully 🌟',
+                        message: 'Redirecting to login page...',
+                        withCloseButton: true,
+                        icon: <IconCheck style={{ width: "90%", height: "90%" }} />,
+                        color: "teal",
+                        withBorder: true,
+                        className: "!border-green-500 rounded-lg"
+                    })
+                    setTimeout(() => {
+                        navigation("/login");
+                    }, 1000)
+                    console.log(response)
+                })
+                .catch((e) => {
+                    notifications.show({
+                        title: 'Registration failed ',
+                        message: e.response.data.errorMessage,
+                        withCloseButton: true,
+                        icon: <IconX style={{ width: "90%", height: "90%" }} />,
+                        color: "red",
+                        withBorder: true,
+                        className: "!border-red-500 rounded-lg"
+                    })
+                }
+                );
+        }
 
     }
 
@@ -119,7 +152,14 @@ const SignUp = () => {
             label={<>I accept {``} <Anchor>terms & conditions</Anchor> </>}
         />
         <Button variant="filled" autoContrast onClick={handleSubmit}>Sign Up</Button>
-        <div className='text-mine-shaft-400 mx-auto'>Have an account? <Link className='text-bright-sun-400 hover:underline' to="/login">Login</Link></div>
+        <div className='text-mine-shaft-400 mx-auto'>Have an account?
+            <span className='text-bright-sun-400 hover:underline cursor-pointer'
+                onClick={() => {
+                    navigation("/login");
+                    setFormData(form);
+                    setFormError(form)
+                }}> Login</span>
+        </div>
     </div>
 }
 

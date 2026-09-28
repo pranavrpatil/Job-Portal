@@ -1,12 +1,15 @@
-import { IconAnchor } from '@tabler/icons-react';
+import { Button } from '@mantine/core';
+import { IconAnchor, IconArrowLeft } from '@tabler/icons-react';
 import SignUp from '../Components/SignUpLogin/SignUp';
 import Login from '../Components/SignUpLogin/Login';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const SignUpPage = () => {
   const location = useLocation();
+  const navigation = useNavigate();
   return (
-    <div className="h-screen bg-mine-shaft-950 font-['poppins'] overflow-hidden">
+    <div className="h-screen bg-mine-shaft-950 font-['poppins'] overflow-hidden relative">
+      <Button className='!absolute left-5 z-10' my="lg" leftSection={<IconArrowLeft size={20} />} color="bright-sun.4" variant="light" onClick={() => navigation("/home")}>Home</Button>
       <div className={`w-full h-full flex [&>*]:shrink-0 transition-all duration-1000 ease-in-out ${location.pathname == "/signup" ? "-translate-x-1/2 " : "translate-x-0"}`}>
         <Login />
         <div className={`w-1/2 h-full flex flex-col items-center gap-5 justify-center ${location.pathname == "/signup" ? "rounded-r-[200px]" : "rounded-l-[200px]"} transition-all duration-1500 ease-in-out bg-mine-shaft-900`}>
