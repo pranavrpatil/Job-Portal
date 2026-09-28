@@ -17,7 +17,6 @@ const form = {
 const SignUp = () => {
 
     const navigation = useNavigate();
-
     const [formData, setFormData] = useState<{ [key: string]: string }>(form);
     const [formError, setFormError] = useState<{ [key: string]: string }>(form);
 
@@ -84,9 +83,8 @@ const SignUp = () => {
                         withBorder: true,
                         className: "!border-red-500 rounded-lg"
                     })
-                    console.log(e.response.data)
-                });
-            console.log(response);
+                }
+                );
         }
 
     }
@@ -155,12 +153,12 @@ const SignUp = () => {
         />
         <Button variant="filled" autoContrast onClick={handleSubmit}>Sign Up</Button>
         <div className='text-mine-shaft-400 mx-auto'>Have an account?
-            <span className='text-bright-sun-400 hover:underline'
+            <span className='text-bright-sun-400 hover:underline cursor-pointer'
                 onClick={() => {
                     navigation("/login");
                     setFormData(form);
                     setFormError(form)
-                }}>Login</span>
+                }}> Login</span>
         </div>
     </div>
 }
