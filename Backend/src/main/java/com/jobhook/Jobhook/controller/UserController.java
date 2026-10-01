@@ -1,5 +1,6 @@
 package com.jobhook.Jobhook.controller;
 
+import com.jobhook.Jobhook.dto.ChangePasswordDTO;
 import com.jobhook.Jobhook.dto.LoginDTO;
 import com.jobhook.Jobhook.dto.ResponseDTO;
 import com.jobhook.Jobhook.dto.UserDTO;
@@ -47,9 +48,15 @@ public class UserController {
     }
 
     @GetMapping("/verifyOtp/{email}/{otp}")
-    public ResponseEntity<ResponseDTO> verifyOtp(@PathVariable @Email(message = "{user.email.invalid}") String email, @PathVariable @Pattern(regexp = "[0-9]{6}", message = "{INVALID_OTP}") String otp) throws JobPortalException {
+    public ResponseEntity<ResponseDTO> verifyOtp(@PathVariable @Email(message = "{user.email.invalid}") String email, @PathVariable @Pattern(regexp = "^[0-9]{6}$", message = "{INVALID_OTP}") String otp) throws JobPortalException {
         userService.verifyOtp(email, otp);
         return new ResponseEntity<>(new ResponseDTO("OTP has been verified."), HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<ResponseDTO> changePassword(@RequestBody @Valid ChangePasswordDTO changePasswordDTO) throws JobPortalException {
+        ResponseDTO user = userService.changePassword(changePasswordDTO);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
 }
