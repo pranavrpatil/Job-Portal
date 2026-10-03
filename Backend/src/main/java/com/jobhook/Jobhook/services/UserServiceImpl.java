@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean sendOtp(String email) throws Exception {
-//        OTP existingUser = otpRepository.findByEmail(email).orElseThrow(()->new JobPortalException("NOT_FOUND"));
+        OTP existingUser = otpRepository.findByEmail(email).orElseThrow(()->new JobPortalException("NOT_FOUND"));
         MimeMessage mm=javaMailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(mm, true);
         messageHelper.setTo(email);
@@ -82,6 +82,14 @@ public class UserServiceImpl implements UserService {
             throw new JobPortalException("INCORRECT_OTP");
         }
         return true;
+    }
+
+    @Override
+    public ResponseDTO resetPassword(LoginDTO userDTO) throws JobPortalException {
+        UserEntity existingUser = userRepository.findByEmail(userDTO.getEmail()).orElseThrow(()->new JobPortalException("NOT_FOUND"));
+        existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        userRepository.save(existingUser);
+        return new ResponseDTO("Password has been changed.");
     }
 
     @Override

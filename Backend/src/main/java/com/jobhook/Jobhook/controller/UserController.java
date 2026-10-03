@@ -35,7 +35,7 @@ public class UserController {
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
-    @PostMapping("loginUser")
+    @PostMapping("/loginUser")
     public ResponseEntity<UserDTO> loginUser(@RequestBody @Valid LoginDTO loginDTO) throws JobPortalException {
         UserDTO user = userService.loginUser(loginDTO);
         return new ResponseEntity<>(user, HttpStatus.OK);
@@ -51,6 +51,12 @@ public class UserController {
     public ResponseEntity<ResponseDTO> verifyOtp(@PathVariable @Email(message = "{user.email.invalid}") String email, @PathVariable @Pattern(regexp = "^[0-9]{6}$", message = "{INVALID_OTP}") String otp) throws JobPortalException {
         userService.verifyOtp(email, otp);
         return new ResponseEntity<>(new ResponseDTO("OTP has been verified."), HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/resetPassword")
+    public ResponseEntity<ResponseDTO> resetPassword(@RequestBody @Valid LoginDTO loginDTO) throws JobPortalException {
+        ResponseDTO user = userService.resetPassword(loginDTO);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PostMapping("/changePassword")
