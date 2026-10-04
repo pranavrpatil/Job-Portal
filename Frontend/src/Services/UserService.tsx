@@ -15,4 +15,27 @@ const loginUser = async (login: any) => {
         .catch(error => { throw error; });
 }
 
-export { loginUser, registerUser };
+const sendOTP = async (email: string) => {
+    return await axios.post(`${BASE_URL}/sendOtp/${email}`)
+        .then(res => res.data)
+        .catch(error => { throw error; });
+}
+
+const verifyOTP = async (email: string, otp: string) => {
+    return await axios.get(`${BASE_URL}/verifyOtp/${email}/${otp}`)
+        .then(res => res.data)
+        .catch(error => { throw error; });
+}
+
+const resetPassword = async (email: string, password: string) => {
+    return await axios.post(`${BASE_URL}/resetPassword`, { email, password })
+        .then(res => res.data)
+        .catch(error => { throw error; });
+}
+
+const changePassword = async (email: string, oldPassword: string, newPassword: string) => {
+    return await axios.put(`${BASE_URL}/changePassword`, { email, oldPassword, newPassword })
+        .then(res => res.data)
+        .catch(error => { throw error; });
+}
+export { loginUser, registerUser, sendOTP, verifyOTP, resetPassword, changePassword };

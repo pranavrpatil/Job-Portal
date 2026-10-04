@@ -3,9 +3,9 @@ import { IconAt, IconCheck, IconLock, IconX } from '@tabler/icons-react'
 import { notifications } from '@mantine/notifications';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import { registerUser } from '../../Services/UserService';
 import { SignUpValidation } from '../../Services/FromValidation';
+import { SuccessNotification, FailureNotification } from '../../Services/NotificationService';
 
 const form = {
     name: "",
@@ -59,32 +59,14 @@ const SignUp = () => {
             const response = registerUser(formData)
                 .then((response) => {
                     setFormData(form);
-                    notifications.show({
-                        title: 'Register Sucessfully 🌟',
-                        message: 'Redirecting to login page...',
-                        withCloseButton: true,
-                        icon: <IconCheck style={{ width: "90%", height: "90%" }} />,
-                        color: "teal",
-                        withBorder: true,
-                        className: "!border-green-500 rounded-lg"
-                    })
+                    SuccessNotification('Register Sucessfully 🌟', 'Redirecting to login page...');
                     setTimeout(() => {
                         navigation("/login");
                     }, 1000)
-                    console.log(response)
                 })
                 .catch((e) => {
-                    notifications.show({
-                        title: 'Registration failed ',
-                        message: e.response.data.errorMessage,
-                        withCloseButton: true,
-                        icon: <IconX style={{ width: "90%", height: "90%" }} />,
-                        color: "red",
-                        withBorder: true,
-                        className: "!border-red-500 rounded-lg"
-                    })
-                }
-                );
+                    FailureNotification('Registration failed', e.response.data.errorMessage)
+                });
         }
 
     }
