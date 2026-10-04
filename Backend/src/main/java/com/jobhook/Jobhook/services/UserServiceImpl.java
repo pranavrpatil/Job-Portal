@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean sendOtp(String email) throws Exception {
-        OTP existingUser = otpRepository.findByEmail(email).orElseThrow(()->new JobPortalException("NOT_FOUND"));
+        UserEntity existingUser = userRepository.findByEmail(email).orElseThrow(()->new JobPortalException("NOT_FOUND"));
         MimeMessage mm=javaMailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(mm, true);
         messageHelper.setTo(email);
@@ -87,6 +87,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseDTO resetPassword(LoginDTO userDTO) throws JobPortalException {
         UserEntity existingUser = userRepository.findByEmail(userDTO.getEmail()).orElseThrow(()->new JobPortalException("NOT_FOUND"));
+        boolean matchRegex = userDTO.getPassword().matches( "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
+        if(!matchRegex){
+            throw new JobPortalException("INVALID_PASSWORD_PATTERN");
+        }
         existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         userRepository.save(existingUser);
         return new ResponseDTO("Password has been changed.");
