@@ -1,6 +1,5 @@
-import { rem, TextInput, PasswordInput, Checkbox, Anchor, Button, Radio, Group } from '@mantine/core'
-import { IconAt, IconCheck, IconLock, IconX } from '@tabler/icons-react'
-import { notifications } from '@mantine/notifications';
+import { rem, TextInput, PasswordInput, Checkbox, Anchor, Button, Radio, Group, LoadingOverlay } from '@mantine/core'
+import { IconAt, IconLock } from '@tabler/icons-react'
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../../Services/UserService';
@@ -19,6 +18,7 @@ const SignUp = () => {
     const navigation = useNavigate();
     const [formData, setFormData] = useState<{ [key: string]: string }>(form);
     const [formError, setFormError] = useState<{ [key: string]: string }>(form);
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (event: any) => {
         if (typeof (event) === "string") {
@@ -56,93 +56,106 @@ const SignUp = () => {
         }
         setFormError(newErrorForm);
         if (valid) {
+            setLoading(true);
             const response = registerUser(formData)
                 .then((response) => {
                     setFormData(form);
                     SuccessNotification('Register Sucessfully 🌟', 'Redirecting to login page...');
                     setTimeout(() => {
+                        setLoading(false);
                         navigation("/login");
-                    }, 1000)
+                    }, 3000)
                 })
                 .catch((e) => {
+                    setLoading(false);
                     FailureNotification('Registration failed', e.response.data.errorMessage)
                 });
         }
 
     }
 
-    return <div className="w-full sm:w-1/2 px-20 flex gap-3 flex-col justify-center">
-        <div className="font-semibold text-2xl ">Create Account</div>
-        <TextInput
-            withAsterisk
-            label="Full Name"
-            placeholder="John Wick"
-            name='name'
-            value={formData.name}
-            onChange={handleChange}
-            error={formError.name}
-        />
+    return <>
 
-        <TextInput
-            withAsterisk
-            leftSection={<IconAt style={{ width: rem(16), height: rem(16) }} />}
-            label="Email"
-            name="email"
-            placeholder="example@gmail.com"
-            value={formData.email}
-            onChange={handleChange}
-            error={formError.email}
-        />
+        <div className="w-full sm:w-1/2 px-20 flex gap-3 flex-col justify-center">
+            {loading && <LoadingOverlay
+                visible={loading}
+                zIndex={1000}
+                className='translate-x-1/2'
+                overlayProps={{ radius: 'sm', blur: 2 }}
+                loaderProps={{ color: 'bright-sun.4', type: 'bars' }}
+            />}
+            <div className="font-semibold text-2xl ">Create Account</div>
+            <TextInput
+                withAsterisk
+                label="Full Name"
+                placeholder="John Wick"
+                name='name'
+                value={formData.name}
+                onChange={handleChange}
+                error={formError.name}
+            />
 
-        <PasswordInput
-            withAsterisk
-            leftSection={<IconLock style={{ width: rem(18), height: rem(18) }} stroke={1.5} />}
-            label="Password"
-            placeholder="Password"
-            name='password'
-            value={formData.password}
-            onChange={handleChange}
-            error={formError.password}
-        />
+            <TextInput
+                withAsterisk
+                leftSection={<IconAt style={{ width: rem(16), height: rem(16) }} />}
+                label="Email"
+                name="email"
+                placeholder="example@gmail.com"
+                value={formData.email}
+                onChange={handleChange}
+                error={formError.email}
+            />
 
-        <PasswordInput
-            withAsterisk
-            leftSection={<IconLock style={{ width: rem(18), height: rem(18) }} stroke={1.5} />}
-            label="Confirm Password"
-            placeholder="Confirm Password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            error={formError.confirmPassword}
-        />
+            <PasswordInput
+                withAsterisk
+                leftSection={<IconLock style={{ width: rem(18), height: rem(18) }} stroke={1.5} />}
+                label="Password"
+                placeholder="Password"
+                name='password'
+                value={formData.password}
+                onChange={handleChange}
+                error={formError.password}
+            />
 
-        <Radio.Group
-            value={formData.accountType}
-            onChange={handleChange}
-            name="accountType"
-            label="You are?"
-            withAsterisk
-        >
-            <Group mt="xs">
-                <Radio className='px-6 py-4 border hover:bg-mine-shaft-900 has-[:checked]:border-bright-sun-400 has-[:checked]:bg-bright-sun-400/5 border-mine-shaft-800 rounded-lg' autoContrast value="APPLICANT" label="Applicant" />
-                <Radio className='px-6 py-4 border hover:bg-mine-shaft-900 has-[:checked]:border-bright-sun-400 has-[:checked]:bg-bright-sun-400/5 border-mine-shaft-800 rounded-lg' autoContrast value="EMPLOYER" label="Employer" />
-            </Group>
-        </Radio.Group>
+            <PasswordInput
+                withAsterisk
+                leftSection={<IconLock style={{ width: rem(18), height: rem(18) }} stroke={1.5} />}
+                label="Confirm Password"
+                placeholder="Confirm Password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                error={formError.confirmPassword}
+            />
 
-        <Checkbox
-            autoContrast
-            label={<>I accept {``} <Anchor>terms & conditions</Anchor> </>}
-        />
-        <Button variant="filled" autoContrast onClick={handleSubmit}>Sign Up</Button>
-        <div className='text-mine-shaft-400 mx-auto'>Have an account?
-            <span className='text-bright-sun-400 hover:underline cursor-pointer'
-                onClick={() => {
-                    navigation("/login");
-                    setFormData(form);
-                    setFormError(form)
-                }}> Login</span>
+            <Radio.Group
+                value={formData.accountType}
+                onChange={handleChange}
+                name="accountType"
+                label="You are?"
+                withAsterisk
+            >
+                <Group mt="xs">
+                    <Radio className='px-6 py-4 border hover:bg-mine-shaft-900 has-[:checked]:border-bright-sun-400 has-[:checked]:bg-bright-sun-400/5 border-mine-shaft-800 rounded-lg' autoContrast value="APPLICANT" label="Applicant" />
+                    <Radio className='px-6 py-4 border hover:bg-mine-shaft-900 has-[:checked]:border-bright-sun-400 has-[:checked]:bg-bright-sun-400/5 border-mine-shaft-800 rounded-lg' autoContrast value="EMPLOYER" label="Employer" />
+                </Group>
+            </Radio.Group>
+
+            <Checkbox
+                autoContrast
+                label={<>I accept {``} <Anchor>terms & conditions</Anchor> </>}
+            />
+            <Button variant="filled" autoContrast loading={loading} onClick={handleSubmit}>Sign Up</Button>
+            <div className='text-mine-shaft-400 mx-auto'>Have an account?
+                <span className='text-bright-sun-400 hover:underline cursor-pointer'
+                    onClick={() => {
+                        navigation("/login");
+                        setFormData(form);
+                        setFormError(form)
+                    }}> Login</span>
+            </div>
         </div>
-    </div>
+    </>
 }
 
 export default SignUp;

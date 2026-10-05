@@ -4,24 +4,11 @@ import '@mantine/carousel/styles.css';
 import '@mantine/tiptap/styles.css';
 import '@mantine/dates/styles.css';
 import '@mantine/notifications/styles.css';
-import { createTheme, MantineProvider, Divider } from '@mantine/core';
+import { createTheme, MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import HomePage from './Pages/HomePage';
-import FindJobs from './Pages/FindJobs';
-import Header from './Components/Header/Header';
-import Footer from './Components/Footer/Footer';
-import FindTalentPage from './Pages/FindTalentPage';
-import TalentProfilePage from './Pages/TalentProfilePage';
-import PostJobPage from './Pages/PostJobPage';
-import JobDescPage from './Pages/JobDescPage';
-import ApplyJobPage from './Pages/ApplyJobPage';
-import CompanyProfilePage from './Pages/CompanyProfilePage';
-import PostedJobsPage from './Pages/PostedJobsPage';
-import JobHistoryPage from './Pages/JobHistoryPage';
-import SignUpPage from './Pages/SignUpPage';
-import ProfilePage from './Pages/ProfilePage';
-
+import { Provider } from 'react-redux';
+import store from './Store';
+import AppRoutes from './Pages/AppRoutes';
 
 function App() {
   const theme = createTheme({
@@ -36,31 +23,12 @@ function App() {
 
   })
   return (
-    <MantineProvider defaultColorScheme='dark' theme={theme}>
-      <Notifications position="top-center" zIndex={1000} />
-      <BrowserRouter>
-        <div className='relative'>
-          <Header />
-          <Divider size="xs" />
-          <Routes>
-            <Route path='/find-jobs' element={<FindJobs />} />
-            <Route path='/find-talent' element={<FindTalentPage />} />
-            <Route path='/jobs' element={<JobDescPage />} />
-            <Route path='/apply-job' element={<ApplyJobPage />} />
-            <Route path='/post-jobs' element={<PostJobPage />} />
-            <Route path='/posted-jobs' element={<PostedJobsPage />} />
-            <Route path='/company' element={<CompanyProfilePage />} />
-            <Route path='/job-history' element={<JobHistoryPage />} />
-            <Route path='/login' element={<SignUpPage />} />
-            <Route path='/signup' element={<SignUpPage />} />
-            <Route path='/profile' element={<ProfilePage />} />
-            <Route path='/talent-profile' element={<TalentProfilePage />} />
-            <Route path='*' element={<HomePage />} />
-          </Routes>
-          <Footer />
-        </div>
-      </BrowserRouter>
-    </MantineProvider>
+    <Provider store={store}>
+      <MantineProvider defaultColorScheme='dark' theme={theme}>
+        <Notifications position="top-center" zIndex={1000} />
+        <AppRoutes />
+      </MantineProvider>
+    </Provider>
   );
 }
 

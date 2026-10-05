@@ -1,13 +1,14 @@
-import { rem, TextInput, PasswordInput, Button } from '@mantine/core'
-import { notifications } from '@mantine/notifications';
-import { IconAt, IconCheck, IconLock, IconX } from '@tabler/icons-react'
+import { rem, TextInput, PasswordInput, Button, LoadingOverlay } from '@mantine/core'
+import { IconAt, IconLock } from '@tabler/icons-react'
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../../Services/UserService';
 import { LoginValidation } from '../../Services/FromValidation';
 import { useDisclosure } from '@mantine/hooks';
 import ResetPassword from './ResetPassword';
 import { SuccessNotification, FailureNotification } from '../../Services/NotificationService';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../Slices/UserSlice';
 
 const form = {
     email: "",
@@ -15,9 +16,12 @@ const form = {
 }
 const Login = () => {
 
+    const dispatch = useDispatch();
+
     const navigation = useNavigate();
     const [formData, setFormData] = useState<{ [key: string]: string }>(form);
     const [formError, setFormError] = useState<{ [key: string]: string }>(form);
+    const [logging, setLoggin] = useState(false);
     const [opened, { open, close }] = useDisclosure(false);
 
     const handleChange = (event: any) => {
@@ -33,18 +37,20 @@ const Login = () => {
             if (newErrorForm[key]) isFilled = false;
         }
         setFormError(newErrorForm);
-
+        setLoggin(true);
         if (isFilled) {
             await loginUser(formData)
                 .then((response) => {
                     setFormData(form);
                     SuccessNotification("Login Successful 🌟", "Redirecting to home page...");
                     setTimeout(() => {
+                        setLoggin(false);
+                        dispatch(setUser(response))
                         navigation("/home");
-                    }, 1000)
-                    console.log(response)
+                    }, 3000)
                 })
                 .catch((e) => {
+                    setLoggin(false);
                     FailureNotification("Login failed ", e.response.data.errorMessage);
                 }
                 );
@@ -52,6 +58,12 @@ const Login = () => {
     }
 
     return <>
+        {logging && <LoadingOverlay
+            visible={logging}
+            zIndex={1000}
+            overlayProps={{ radius: 'sm', blur: 2 }}
+            loaderProps={{ color: 'bright-sun.4', type: 'bars' }}
+        />}
         <div className="w-1/2 px-20 flex gap-3 flex-col justify-center">
             <div className="font-semibold text-2xl ">Login</div>
             <TextInput
@@ -74,7 +86,7 @@ const Login = () => {
                 error={formError.password}
             />
 
-            <Button variant="filled" autoContrast onClick={handleSubmit}>Login</Button>
+            <Button variant="filled" autoContrast loading={logging} onClick={handleSubmit}>Login</Button>
             <div className='text-mine-shaft-400 mx-auto'>Don't have an account?
                 <span className='text-bright-sun-400 hover:underline cursor-pointer'
                     onClick={() => {
