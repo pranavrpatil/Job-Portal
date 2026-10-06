@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Divider } from '@mantine/core';
 import HomePage from './HomePage';
 import FindJobs from './FindJobs';
@@ -14,8 +14,10 @@ import PostedJobsPage from '../Pages/PostedJobsPage';
 import JobHistoryPage from '../Pages/JobHistoryPage';
 import SignUpPage from '../Pages/SignUpPage';
 import ProfilePage from '../Pages/ProfilePage';
+import { useSelector } from "react-redux";
 
 const AppRoutes = () => {
+    const user = useSelector((state: any) => state.user);
     return (
         <BrowserRouter>
             <div className='relative'>
@@ -30,8 +32,8 @@ const AppRoutes = () => {
                     <Route path='/posted-jobs' element={<PostedJobsPage />} />
                     <Route path='/company' element={<CompanyProfilePage />} />
                     <Route path='/job-history' element={<JobHistoryPage />} />
-                    <Route path='/login' element={<SignUpPage />} />
-                    <Route path='/signup' element={<SignUpPage />} />
+                    <Route path='/login' element={user ? <Navigate to="/" /> : <SignUpPage />} />
+                    <Route path='/signup' element={user ? <Navigate to="/" /> : <SignUpPage />} />
                     <Route path='/profile' element={<ProfilePage />} />
                     <Route path='/talent-profile' element={<TalentProfilePage />} />
                     <Route path='*' element={<HomePage />} />
