@@ -30,8 +30,9 @@ public class UserDTO {
     )
     private String password;
     private AccountType accountType;
+    private Long profileId;
 
     public UserEntity toEntity(){
-        return new UserEntity(this.id, this.name, this.email, this.password, this.accountType);
+        return new UserEntity(this.id, this.name, this.email, this.password, this.accountType, this.profileId);
     }
 }

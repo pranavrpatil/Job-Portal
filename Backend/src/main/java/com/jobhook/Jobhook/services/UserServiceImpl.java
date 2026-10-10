@@ -17,6 +17,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,24 +28,28 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final OTPRepository otpRepository;
+    private final ProfileServiceImpl profileService;
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender javaMailSender;
 
-    UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JavaMailSender javaMailSender, OTPRepository otpRepository
+    UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JavaMailSender javaMailSender, OTPRepository otpRepository, ProfileServiceImpl profileService
     ){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.javaMailSender = javaMailSender;
         this.otpRepository = otpRepository;
+        this.profileService = profileService;
     }
 
     @Override
+    @Transactional
     public UserDTO registerUser(UserDTO userDTO) throws JobPortalException {
         Optional<UserEntity> existingUser = userRepository.findByEmail(userDTO.getEmail());
         if(existingUser.isPresent()){
             throw new JobPortalException("USER_FOUND");
         }
         userDTO.setId(Utilities.getNextSequence("user"));
+        userDTO.setProfileId(profileService.createProfile(userDTO.getEmail()));
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         UserEntity user = userDTO.toEntity();
         UserEntity savedUser = userRepository.save(user);
