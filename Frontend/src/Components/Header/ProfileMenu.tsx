@@ -7,18 +7,21 @@ import {
     IconMoonFilled, IconSun, IconMoonStars
 } from '@tabler/icons-react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { removeUser } from '../../Slices/UserSlice';
 
 const ProfileMenu = () => {
     const dispatch = useDispatch();
+    const navigation = useNavigate();
     const user = useSelector((state: any) => state.user);
     const [checked, setChecked] = useState(false);
     const [opened, setOpened] = useState(false);
 
     const handleLogout = () => {
         dispatch(removeUser());
+        navigation("/login");
     };
 
     return (
