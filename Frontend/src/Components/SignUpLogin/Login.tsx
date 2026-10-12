@@ -17,8 +17,8 @@ const form = {
 const Login = () => {
 
     const dispatch = useDispatch();
-
     const navigation = useNavigate();
+
     const [formData, setFormData] = useState<{ [key: string]: string }>(form);
     const [formError, setFormError] = useState<{ [key: string]: string }>(form);
     const [logging, setLoggin] = useState(false);

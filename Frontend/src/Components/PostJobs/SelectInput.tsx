@@ -6,20 +6,22 @@ const SelectInput = (props: any) => {
     onDropdownClose: () => combobox.resetSelectedOption(),
   });
 
-  const [data, setData] = useState<string[]>([]);   
+  const [data, setData] = useState<string[]>([]);
   const [value, setValue] = useState<string | null>(null);
   const [search, setSearch] = useState('');
 
   useEffect(() => {
     setData(props.options);
-  }, [props.options]);
+    setValue(props.form.getInputProps(props.name).value);
+    setSearch(props.form.getInputProps(props.name).value)
+  }, []);
 
   const exactOptionMatch = data.some((item) => item === search);
   const filteredOptions = exactOptionMatch
     ? data
     : data.filter((item) =>
-        item.toLowerCase().includes(search.toLowerCase().trim())
-      );
+      item?.toLowerCase().includes(search?.toLowerCase().trim())
+    );
 
   const options = filteredOptions.map((item) => (
     <Combobox.Option value={item} key={item}>
@@ -32,20 +34,23 @@ const SelectInput = (props: any) => {
       store={combobox}
       withinPortal={false}
       onOptionSubmit={(val) => {
-        
         if (val === '$create') {
           setData((current) => [...current, search]);
           setValue(search);
+          props.form.setFieldValue(props.name, search);
         } else {
           setValue(val);
           setSearch(val);
+          props.form.setFieldValue(props.name, val);
         }
         combobox.closeDropdown();
       }}
     >
       <Combobox.Target>
-        <InputBase withAsterisk className='[&_input]:font-medium [&_label]:mb-1'
-          label ={props.label}
+        <InputBase {...props.form.getInputProps(props.name)}
+          withAsterisk
+          className='[&_input]:font-medium [&_label]:mb-1'
+          label={props.label}
           rightSection={<Combobox.Chevron />}
           value={search}
           onChange={(event) => {
@@ -57,7 +62,7 @@ const SelectInput = (props: any) => {
           onFocus={() => combobox.openDropdown()}
           onBlur={() => {
             combobox.closeDropdown();
-            setSearch(value || ''); 
+            setSearch(value || '');
           }}
           placeholder={props.placeholder}
           rightSectionPointerEvents="none"
@@ -66,10 +71,10 @@ const SelectInput = (props: any) => {
       <Combobox.Dropdown>
         <Combobox.Options>
           <ScrollArea.Autosize mah={200} type='scroll'>
-          {options}
-          {!exactOptionMatch && search.trim().length > 0 && (
-            <Combobox.Option value="$create">+ Create</Combobox.Option>
-          )}
+            {options}
+            {!exactOptionMatch && search?.trim()?.length > 0 && (
+              <Combobox.Option value="$create">+ Create</Combobox.Option>
+            )}
           </ScrollArea.Autosize>
         </Combobox.Options>
       </Combobox.Dropdown>
