@@ -19,7 +19,7 @@ public class ProfileEntity {
     @Id
     private Long id;
     private String email;
-    private String jobTitle;
+    private String role;
     private String company;
     private String location;
     private String about;
@@ -28,6 +28,6 @@ public class ProfileEntity {
     private List<CertificationDTO> certifications;
 
     public ProfileDTO toProfileDTO(){
-        return new ProfileDTO(this.id, this.email, this.jobTitle,this.company, this.location, this.about, this.skills, this.experiences, this.certifications);
+        return new ProfileDTO(this.id, this.email, this.role,this.company, this.location, this.about, this.skills, this.experiences, this.certifications);
     }
 }
