@@ -1,5 +1,5 @@
 import { IconPencil, IconDeviceFloppy, IconPlus } from '@tabler/icons-react';
-import { ActionIcon, Divider, Textarea, TagsInput } from '@mantine/core';
+import { ActionIcon, Divider } from '@mantine/core';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ExpCard from './ExpCard';
@@ -7,6 +7,8 @@ import CertiCard from './CertiCard';
 import ExpInput from './ExpInput';
 import CertiInput from './CertiInput';
 import Info from './Info';
+import About from './About';
+import Skills from './Skills';
 import { getProfile } from '../../Services/ProfileService';
 import { setProfile } from '../../Slices/ProfileSlice';
 
@@ -24,8 +26,6 @@ const Profile = (props: any) => {
     }, []);
 
     const [edit, setEdit] = useState([false, false, false, false, false]);
-    const [about, setAbout] = useState(props.about);
-    const [skills, setSkills] = useState(props.skills);
     const [addExp, setAddExp] = useState(false);
     const [addCerti, setAddCerti] = useState(false);
 
@@ -53,43 +53,13 @@ const Profile = (props: any) => {
         </div>
         <Divider my="xl" />
         <div className='px-3'>
-            <div className='text-2xl font-semibold mb-3 flex justify-between'>About <ActionIcon color='bright-sun.4' size="lg" variant="subtle" aria-label="Settings" onClick={() => handleEdit(1)}>
-                {edit[1] ? <IconDeviceFloppy className='h-4/5 w-4/5' /> : <IconPencil className='h-4/5 w-4/5' />}
-            </ActionIcon></div>
-
-            {
-                edit[1] ? <Textarea
-                    className='[&_value]:p-10'
-                    placeholder="Describe yourself"
-                    autosize
-                    value={about}
-                    onChange={(event) => setAbout(event.currentTarget.value)}
-                    minRows={4}
-                /> : <div className='text-sm text-mine-shaft-300 text-justify mb-5'>{profile?.about}</div>
-            }
+            <About />
         </div>
 
         <Divider size="xs" color="mine-shaft.7" my="xl" mx={"xs"} />
 
         <div className='px-3'>
-            <div className='text-2xl font-semibold mb-3 flex justify-between'>Skills <ActionIcon color='bright-sun.4' size="lg" variant="subtle" aria-label="Settings" onClick={() => handleEdit(2)}>
-                {edit[2] ? <IconDeviceFloppy className='h-4/5 w-4/5' /> : <IconPencil className='h-4/5 w-4/5' />}
-            </ActionIcon></div>
-            <div className='flex flex-wrap gap-2'>
-                {
-                    profile?.skills?.map((skill: any, index: any) =>
-                        <div key={index} className='bg-bright-sun-300 text-sm font-medium bg-opacity-15 rounded-3xl text-bright-sun-400 px-3 py-1'>{skill}</div>)
-                }
-            </div>
-            {
-                edit[2] && <TagsInput
-                    className='mt-5'
-                    placeholder="Add skills"
-                    splitChars={[',', ' ', '|']}
-                    value={skills} onChange={setSkills}
-                />
-            }
-
+            <Skills />
         </div>
 
         <Divider size="xs" color="mine-shaft.7" my="xl" mx={"xs"} />

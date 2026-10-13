@@ -49,7 +49,8 @@ const Info = () => {
                 <div className='flex gap-10 mb-5 [&>*]:w-1/2'>
                     <SelectInput form={form} name={"location"} {...select[2]} />
                 </div></> : <>
-                <div className='text-xl flex items-center gap-1'><IconBriefcase className="h-5 w-5" /> {profile?.role} &bull;{profile?.company}</div>
+                <div className='text-xl flex items-center gap-1'>
+                    <IconBriefcase className="h-5 w-5" /> {profile?.role} &bull; {profile?.company}</div>
                 <div className='flex gap-1 text-lg text-mine-shaft-300 items-center'>
                     <IconMapPin stroke={1.5} className='h-5 w-5' /> {profile?.location}
                 </div>
