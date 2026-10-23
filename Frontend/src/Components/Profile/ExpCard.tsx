@@ -18,8 +18,7 @@ const ExpCard = (props: any) => {
                 </div>
             </div>
             <div className='text-sm text-mine-shaft-300'>
-                {/* {props.startDate} - {props.endDate} */}
-                {formatDate(props.startDate)} - {formatDate(props.endDate)}
+                {formatDate(props.startDate)} - {props.isWorking ? "Present" : formatDate(props.endDate)}
             </div>
         </div>
 
