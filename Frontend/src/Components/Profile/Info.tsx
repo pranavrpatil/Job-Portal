@@ -1,4 +1,4 @@
-import { IconBriefcase, IconMapPin, IconPencil, IconDeviceFloppy, IconPlus } from '@tabler/icons-react';
+import { IconBriefcase, IconMapPin, IconPencil, IconDeviceFloppy, IconPlus, IconCheck, IconX } from '@tabler/icons-react';
 import { ActionIcon } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
@@ -25,19 +25,34 @@ const Info = () => {
             setEdit(true);
             form.setValues({ role: profile.role, company: profile.company, location: profile.location })
         }
-        else {
-            setEdit(false);
-            const updatedProfile = { ...profile, ...form.getValues() };
-            console.log("updated profile", updatedProfile);
-            dispatch(changeProfile(updatedProfile));
-        }
     }
+
+    const handleSave = () => {
+        setEdit(false);
+        const updatedProfile = { ...profile, ...form.getValues() };
+        dispatch(changeProfile(updatedProfile));
+    }
+
+    const handleCancel = () => {
+        setEdit(false);
+        return;
+    }
+
     return <>
         <div className='text-3xl font-semibold flex justify-between'>
             {user?.name}
-            <ActionIcon color='bright-sun.4' size="lg" variant="subtle" aria-label="Settings" onClick={() => handleEdit()}>
-                {edit ? <IconDeviceFloppy className='h-4/5 w-4/5' /> : <IconPencil className='h-4/5 w-4/5' />}
-            </ActionIcon>
+            <div>
+                {edit ? <>
+                    <ActionIcon color='green.8' size="lg" variant="subtle" aria-label="Settings" onClick={() => handleSave()}>
+                        <IconCheck className='h-4/5 w-4/5' stroke={1.5} />
+                    </ActionIcon>
+                    <ActionIcon color='red.8' size="lg" variant="subtle" aria-label="Settings" onClick={() => handleCancel()}>
+                        <IconX className='h-4/5 w-4/5' stroke={1.5} />
+                    </ActionIcon>
+                </> : <ActionIcon color='bright-sun.4' size="lg" variant="subtle" aria-label="Settings" onClick={() => handleEdit()}>
+                    <IconPencil className='h-4/5 w-4/5' />
+                </ActionIcon>}
+            </div>
         </div>
 
         {
