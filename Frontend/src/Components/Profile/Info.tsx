@@ -1,4 +1,4 @@
-import { IconBriefcase, IconMapPin, IconPencil, IconDeviceFloppy, IconPlus, IconCheck, IconX } from '@tabler/icons-react';
+import { IconBriefcase, IconMapPin, IconPencil, IconCheck, IconX } from '@tabler/icons-react';
 import { ActionIcon } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useState } from 'react';

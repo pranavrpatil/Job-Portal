@@ -1,24 +1,40 @@
 import { Textarea, Checkbox, Button } from '@mantine/core';
 import { useState } from 'react';
+import { useForm } from '@mantine/form';
 import { MonthPickerInput } from '@mantine/dates';
 import SelectInput from '../PostJobs/SelectInput';
 import fields from '../../Data/Profile';
 
 const ExpInput = (props: any) => {
+
+    const form = useForm({
+        mode: 'controlled',
+
+        initialValues: {
+            title: "",
+            company: "",
+            location: "",
+            startDate: null,
+            endDate: null,
+            description: "",
+            isWorking: true
+        },
+    });
+
     const [start, setStart] = useState<Date | null>(new Date());
     const [end, setEnd] = useState<Date | null>(new Date());
     const select = fields;
     const [checked, setChecked] = useState(false);
-    const [desc, setDesc] = useState("As a Software Engineer at Google, I specialize in building scalable and high-performance applications. My expertise lies in integrating front-end and back-end technologies to deliver seamless user experiences. With a strong foundation in React and SpringBoot, and a focus on MongoDB for database solutions, I am passionate about leveraging the latest technologies to solve complex problems and drive innovation. My goal is to create impactful software that enhances productivity and meets user needs effectively.");
+    const [desc, setDesc] = useState("");
 
     return <div className='flex flex-col'>
         <div className='text-lg font-semibold mb-5 flex justify-between'>{props.add ? "Add Experience" : "Edit Experience"}</div>
         <div className='flex gap-10 mb-5 [&>*]:w-1/2'>
-            <SelectInput {...select[0]} />
-            <SelectInput {...select[1]} />
+            <SelectInput form={form} name={"title"} {...select[0]} />
+            <SelectInput form={form} name={"company"} {...select[1]} />
         </div>
         <div className='flex gap-10 mb-5 [&>*]:w-1/2'>
-            <SelectInput {...select[2]} />
+            <SelectInput form={form} name={"location"} {...select[2]} />
         </div>
 
         <Textarea

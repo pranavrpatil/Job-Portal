@@ -9,6 +9,7 @@ import CertiInput from './CertiInput';
 import Info from './Info';
 import About from './About';
 import Skills from './Skills';
+import Experience from './Experience';
 import { getProfile } from '../../Services/ProfileService';
 import { setProfile } from '../../Slices/ProfileSlice';
 
@@ -65,24 +66,9 @@ const Profile = (props: any) => {
         <Divider size="xs" color="mine-shaft.7" my="xl" mx={"xs"} />
 
         <div className='px-3'>
-            <div className='text-2xl font-semibold mb-5 flex justify-between'>Experience
-                <div className='flex gap-2 '>
-                    <ActionIcon color='bright-sun.4' size="lg" variant="subtle" aria-label="Settings" onClick={handleAdd}>
-                        <IconPlus className='h-4/5 w-4/5 ' />
-                    </ActionIcon>
-
-                    <ActionIcon color='bright-sun.4' size="lg" variant="subtle" aria-label="Settings" onClick={() => handleEdit(3)}>
-                        {edit[3] ? <IconDeviceFloppy className='h-4/5 w-4/5' /> : <IconPencil className='h-4/5 w-4/5' />}
-                    </ActionIcon>
-                </div>
-            </div>
-            {addExp && <ExpInput setEdit={setAddExp} add />}
-            <div className='flex flex-col gap-10'>
-                {
-                    profile?.experiences?.map((experience: any, index: any) => < ExpCard key={index} {...experience} edit={edit[3]} />)
-                }
-            </div>
+            <Experience />
         </div>
+
         <Divider size="xs" color="mine-shaft.7" my="xl" mx={"xs"} />
         <div className='px-3'>
             <div className='text-2xl font-semibold mb-5 flex justify-between'>Certifications
