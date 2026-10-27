@@ -5,6 +5,7 @@ import { formatDate } from '../../Services/Utilities';
 
 const ExpCard = (props: any) => {
     const [edit, setEdit] = useState(false);
+    console.log(props);
 
     return !edit ? <div className='flex flex-col gap-2'>
         <div className='flex justify-between'>
@@ -31,7 +32,7 @@ const ExpCard = (props: any) => {
             <Button color="bright-sun.4" onClick={() => { setEdit(true) }} variant="outline">Edit</Button>
             <Button color="red.8" variant="light">Delete</Button>
         </div>}
-    </div> : <ExpInput setEdit={setEdit} />
+    </div> : <ExpInput setEdit={setEdit} {...props} />
 }
 
 export default ExpCard;
