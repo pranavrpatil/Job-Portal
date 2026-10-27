@@ -1,8 +1,8 @@
 import { Textarea, Checkbox, Button } from '@mantine/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
 import { isNotEmpty, useForm } from '@mantine/form';
 import { MonthPickerInput } from '@mantine/dates';
+import { useEffect } from 'react';
 import SelectInput from '../PostJobs/SelectInput';
 import fields from '../../Data/Profile';
 import { changeProfile } from '../../Slices/ProfileSlice';
@@ -43,10 +43,9 @@ const ExpInput = (props: any) => {
             description: props.description,
             isWorking: props.isWorking
         });
-    }, [])
+    }, []);
 
     const handleSave = () => {
-        props.setEdit(false)
         form.validate();
         if (!form.isValid()) return;
         let experiences = [...profile.experiences]
@@ -63,6 +62,7 @@ const ExpInput = (props: any) => {
 
         let updatedProfile = { ...profile, experiences: experiences };
         dispatch(changeProfile(updatedProfile));
+        props.setEdit(false);
     }
 
     return <div className='flex flex-col'>
