@@ -2,7 +2,6 @@ import { IconPencil, IconDeviceFloppy, IconCheck, IconX } from '@tabler/icons-re
 import { ActionIcon, Textarea } from '@mantine/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import { useForm } from '@mantine/form';
 import { changeProfile } from '../../Slices/ProfileSlice';
 
 const About = () => {
@@ -10,21 +9,18 @@ const About = () => {
     const profile = useSelector((state: any) => state.profile);
 
     const [edit, setEdit] = useState(false);
-    const form = useForm({
-        mode: 'controlled',
-        initialValues: { about: '' },
-    });
+    const [about, setAbout] = useState('');
 
     const handleEdit = () => {
         if (!edit) {
             setEdit(true);
-            form.setValues({ about: profile.about });
+            setAbout(profile?.about);
         }
     }
 
     const handleSave = () => {
         setEdit(false);
-        const updatedProfile = { ...profile, ...form.getValues() };
+        const updatedProfile = { ...profile, about };
         dispatch(changeProfile(updatedProfile));
     }
 
@@ -54,8 +50,8 @@ const About = () => {
                 className='[&_value]:p-10'
                 placeholder="Describe yourself"
                 autosize
-                value={form.getValues().about}
-                onChange={(event) => form.setFieldValue('about', event.currentTarget.value)}
+                value={about}
+                onChange={(event) => setAbout(event.target.value)}
                 minRows={4}
             /> : <div className='text-sm text-mine-shaft-300 text-justify mb-5'>{profile?.about}</div>
         }

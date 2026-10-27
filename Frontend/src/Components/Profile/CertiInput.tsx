@@ -1,39 +1,72 @@
 import { TextInput, Button } from '@mantine/core';
+import { isNotEmpty, useForm } from '@mantine/form';
 import { MonthPickerInput } from '@mantine/dates';
+import { useSelector, useDispatch } from 'react-redux';
 import SelectInput from '../PostJobs/SelectInput';
 import fields from '../../Data/Profile';
-import { useState } from 'react';
+import { changeProfile } from '../../Slices/ProfileSlice';
 
 const CertiInput = (props: any) => {
+
     const select = fields;
-    const [issueDate, setIssueDate] = useState<Date | null>(new Date());
+    const dispatch = useDispatch();
+    const profile = useSelector((state: any) => state.profile);
+
+    const form = useForm({
+        mode: 'controlled',
+        validateInputOnChange: true,
+        initialValues: {
+            name: "",
+            issuer: "",
+            issueDate: new Date(),
+            certificateId: ""
+        },
+        validate: {
+            name: isNotEmpty("Name is required"),
+            issuer: isNotEmpty("Issuer is required")
+        }
+    });
+
+    const handleSave = () => {
+        form.validate();
+        if (!form.isValid()) return;
+        let certifications = [...profile.certifications];
+        certifications.push(form.getValues());
+        certifications[certifications.length - 1].issueDate = certifications[certifications.length - 1].issueDate.toISOString();
+        const updatedProfile = { ...profile, certifications: certifications }
+        dispatch(changeProfile(updatedProfile));
+        props.setEdit(false)
+    }
 
     return <div className='flex flex-col'>
         <div className='text-lg font-semibold mb-5 flex justify-between'>Add Certitificate</div>
         <div className='flex gap-10 mb-5 [&>*]:w-1/2'>
             <TextInput
+                {...form.getInputProps('name')}
                 label="Title"
+                withAsterisk
                 placeholder="Java Foundation"
             />
-            <SelectInput {...select[1]} />
+            <SelectInput form={form} name={"issuer"} {...select[1]} />
         </div>
 
         <div className='flex gap-10 mb-5 mt-5 [&>*]:w-1/2'>
             <MonthPickerInput
+                {...form.getInputProps('issueDate')}
                 label="Issue date"
-                withAsterisk
+                placeholder="Issue Date"
                 maxDate={new Date()}
-                value={issueDate}
-                onChange={setIssueDate}
+                withAsterisk
             />
             <TextInput
+                {...form.getInputProps('certificateId')}
                 label="Certificate ID"
-                placeholder="Issue ID"
+                placeholder="Certificate ID"
             />
         </div>
 
         <div className='flex gap-5 mt-3'>
-            <Button color="bright-sun.4" onClick={() => { props.setEdit(false) }} variant="outline">Save</Button>
+            <Button color="bright-sun.4" onClick={handleSave} variant="outline">Save</Button>
             <Button color="red.8" onClick={() => { props.setEdit(false) }} variant="light">Cancle</Button>
         </div>
 

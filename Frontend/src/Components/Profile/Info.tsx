@@ -1,11 +1,11 @@
-import { IconBriefcase, IconMapPin, IconPencil, IconDeviceFloppy, IconPlus, IconCheck, IconX } from '@tabler/icons-react';
+import { IconBriefcase, IconMapPin, IconPencil, IconCheck, IconX } from '@tabler/icons-react';
 import { ActionIcon } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SelectInput from '../PostJobs/SelectInput';
 import fields from '../../Data/Profile';
-import { changeProfile, setProfile } from '../../Slices/ProfileSlice';
+import { changeProfile } from '../../Slices/ProfileSlice';
 
 const Info = () => {
 
