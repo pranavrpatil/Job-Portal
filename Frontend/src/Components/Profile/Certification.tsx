@@ -1,4 +1,4 @@
-import { IconPencil, IconDeviceFloppy, IconPlus } from '@tabler/icons-react';
+import { IconPencil, IconPlus, IconX } from '@tabler/icons-react';
 import { ActionIcon } from '@mantine/core';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -27,8 +27,8 @@ const Certifications = () => {
                     <IconPlus className='h-4/5 w-4/5 ' />
                 </ActionIcon>
 
-                <ActionIcon color='bright-sun.4' size="lg" variant="subtle" aria-label="Settings" onClick={() => handleEdit()}>
-                    {edit ? <IconDeviceFloppy className='h-4/5 w-4/5' /> : <IconPencil className='h-4/5 w-4/5' />}
+                <ActionIcon color={edit ? 'red.8' : 'bright-sun.4'} size="lg" variant="subtle" aria-label="Settings" onClick={() => handleEdit()}>
+                    {edit ? <IconX className='h-4/5 w-4/5' /> : <IconPencil className='h-4/5 w-4/5' />}
                 </ActionIcon>
             </div>
         </div>

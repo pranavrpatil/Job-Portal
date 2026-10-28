@@ -1,13 +1,26 @@
 import { IconAnchor, IconBell, IconSettings } from "@tabler/icons-react";
 import { Button, Indicator } from '@mantine/core';
-import NavLinks from "./Navlinks";
 import { Link, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import NavLinks from "./Navlinks";
 import ProfileMenu from "./ProfileMenu";
-import { useSelector } from "react-redux";
+import { getProfile } from '../../Services/ProfileService';
+import { setProfile } from '../../Slices/ProfileSlice';
 
 const Header = () => {
     const location = useLocation();
+
+    const dispatch = useDispatch();
     const user = useSelector((state: any) => state.user);
+
+    useEffect(() => {
+        user && getProfile(user.profileId)
+            .then((data: any) => {
+                dispatch(setProfile(data));
+            })
+            .catch(error => console.log(error));
+    }, []);
 
     return (location.pathname != "/signup" && location.pathname != "/login") ? <div className="w-full bg-mine-shaft-950 h-20 text-white flex justify-content-space justify-between
 items-center px-6">

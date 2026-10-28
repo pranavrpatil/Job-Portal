@@ -114,7 +114,7 @@ const ExpInput = (props: any) => {
         />
 
         <div className='flex gap-5 mt-3'>
-            <Button color="bright-sun.4" onClick={handleSave} variant="outline">Save</Button>
+            <Button color="green.8" onClick={handleSave} variant="light">Save</Button>
             <Button color="red.8" onClick={() => { props.setEdit(false) }} variant="light">Cancle</Button>
         </div>
     </div>

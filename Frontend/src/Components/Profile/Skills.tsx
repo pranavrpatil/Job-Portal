@@ -2,7 +2,6 @@ import { IconPencil, IconCheck, IconX } from "@tabler/icons-react";
 import { ActionIcon, TagsInput } from '@mantine/core';
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { useForm } from "@mantine/form";
 import { changeProfile } from "../../Slices/ProfileSlice";
 import { SuccessNotification, FailureNotification } from '../../Services/NotificationService';
 
@@ -50,7 +49,8 @@ const Skills = () => {
         <div className='flex flex-wrap gap-2'>
             {
                 profile?.skills?.map((skill: any, index: any) =>
-                    <div key={index} className='bg-bright-sun-300 text-sm font-medium bg-opacity-15 rounded-3xl text-bright-sun-400 px-3 py-1'>{skill}</div>)
+                    <div key={index} className='bg-bright-sun-300 text-sm font-medium bg-opacity-15 rounded-3xl text-bright-sun-400 px-3 py-1'>{skill}
+                    </div>)
             }
         </div>
         {
