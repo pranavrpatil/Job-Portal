@@ -1,13 +1,12 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Combobox, InputBase, ScrollArea, useCombobox } from '@mantine/core';
-import {IconBriefcase,IconMapPin } from '@tabler/icons-react'
 
 const SelectInput = (props: any) => {
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
   });
 
-  const [data, setData] = useState<string[]>([]);   
+  const [data, setData] = useState<string[]>([]);
   const [value, setValue] = useState<string | null>(null);
   const [search, setSearch] = useState('');
 
@@ -21,8 +20,8 @@ const SelectInput = (props: any) => {
   const filteredOptions = exactOptionMatch
     ? data
     : data.filter((item) =>
-        item.toLowerCase().includes(search.toLowerCase().trim())
-      );
+      item.toLowerCase().includes(search.toLowerCase().trim())
+    );
 
   const options = filteredOptions.map((item) => (
     <Combobox.Option value={item} key={item}>
@@ -35,7 +34,7 @@ const SelectInput = (props: any) => {
       store={combobox}
       withinPortal={false}
       onOptionSubmit={(val) => {
-        
+
         if (val === '$create') {
           setData((current) => [...current, search]);
           setValue(search);
@@ -47,11 +46,11 @@ const SelectInput = (props: any) => {
       }}
     >
       <Combobox.Target>
-        <InputBase withAsterisk 
-          label ={props.label}
+        <InputBase withAsterisk
+          label={props.label}
           rightSection={<Combobox.Chevron />}
           value={search}
-          leftSection ={<props.icon />}
+          leftSection={<props.icon />}
           onChange={(event) => {
             combobox.openDropdown();
             combobox.updateSelectedOptionIndex();
@@ -61,7 +60,7 @@ const SelectInput = (props: any) => {
           onFocus={() => combobox.openDropdown()}
           onBlur={() => {
             combobox.closeDropdown();
-            setSearch(value || ''); 
+            setSearch(value || '');
           }}
           placeholder={props.placeholder}
           rightSectionPointerEvents="none"
@@ -70,10 +69,10 @@ const SelectInput = (props: any) => {
       <Combobox.Dropdown>
         <Combobox.Options>
           <ScrollArea.Autosize mah={200} type='scroll'>
-          {options}
-          {!exactOptionMatch && search.trim().length > 0 && (
-            <Combobox.Option value="$create">+ Create</Combobox.Option>
-          )}
+            {options}
+            {!exactOptionMatch && search.trim().length > 0 && (
+              <Combobox.Option value="$create">+ Create</Combobox.Option>
+            )}
           </ScrollArea.Autosize>
         </Combobox.Options>
       </Combobox.Dropdown>
