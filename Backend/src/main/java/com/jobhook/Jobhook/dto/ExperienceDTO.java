@@ -1,5 +1,6 @@
 package com.jobhook.Jobhook.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ public class ExperienceDTO {
     private String location;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    @JsonProperty("isWorking")
     private boolean isWorking;
     private String description;
 }
