@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Validated
 @CrossOrigin
@@ -25,5 +27,17 @@ public class JobsController {
     public ResponseEntity<JobsDTO> postNewJob(@RequestBody @Valid JobsDTO jobsDTO) throws JobPortalException {
         JobsDTO savedJob = jobsService.postNewJob(jobsDTO);
         return new ResponseEntity<>(savedJob, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/getAllJobs")
+    public ResponseEntity<List<JobsDTO>> getAllJobs(){
+        List<JobsDTO> allJobs = jobsService.getAllJobs();
+        return new ResponseEntity<>(allJobs, HttpStatus.OK);
+    }
+
+    @GetMapping("/getJobById/{id}")
+    public ResponseEntity<JobsDTO> getJobById(@PathVariable String id) throws JobPortalException {
+        JobsDTO job = jobsService.getJobById(id);
+        return new ResponseEntity<>(job, HttpStatus.OK);
     }
 }
