@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Base64;
 import java.util.List;
 
 @Data
@@ -17,11 +18,12 @@ public class ProfileDTO {
     private String company;
     private String location;
     private String about;
+    private String image;
     private List<String> skills;
     private List<ExperienceDTO> experiences;
     private List<CertificationDTO> certifications;
 
     public ProfileEntity toProfileEntity(){
-        return new ProfileEntity(this.id, this.email, this.role,this.company, this.location, this.about, this.skills, this.experiences, this.certifications);
+        return new ProfileEntity(this.id, this.email, this.role,this.company, this.location, this.about, this.image != null? Base64.getDecoder().decode(image): null, this.skills, this.experiences, this.certifications);
     }
 }
