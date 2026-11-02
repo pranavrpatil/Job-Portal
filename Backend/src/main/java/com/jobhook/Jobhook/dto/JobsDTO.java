@@ -13,9 +13,10 @@ import java.util.List;
 @AllArgsConstructor
 public class JobsDTO {
 
-    private Long id;
+    private String id;
     private String jobTitle;
     private String company;
+    private String jobType;
     private List<Applicant> applicantsList;
     private String about;
     private int experience;
@@ -27,6 +28,6 @@ public class JobsDTO {
     private JobStatus jobStatus;
 
     public JobsEntity toJobsEntity(){
-        return new JobsEntity(this.id, this.jobTitle, this.company, this.applicantsList, this.about, this.experience, this.location, this.offeredPackage, this.postedTime, this.description, this.requiredSkills, this.jobStatus);
+        return new JobsEntity(this.id, this.jobTitle, this.company, this.jobType, this.applicantsList, this.about, this.experience, this.location, this.offeredPackage, this.postedTime, this.description, this.requiredSkills, this.jobStatus);
     }
 }

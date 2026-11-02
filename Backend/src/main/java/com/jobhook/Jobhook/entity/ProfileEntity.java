@@ -30,7 +30,7 @@ public class ProfileEntity {
     private List<CertificationDTO> certifications;
 
     public ProfileDTO toProfileDTO() {
-        return new ProfileDTO(this.id, this.email, this.jobTitle, this.company, this.location, this.about,
+        return new ProfileDTO(this.id, this.email, this.role, this.company, this.location, this.about,
                 this.image != null ? Base64.getEncoder().encodeToString(this.image) : null, this.skills,
                 this.experiences, this.certifications);
     }
