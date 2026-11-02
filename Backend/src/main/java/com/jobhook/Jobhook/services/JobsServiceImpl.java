@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,13 +23,30 @@ public class JobsServiceImpl implements JobsService {
     public JobsDTO postNewJob(JobsDTO jobsDTO) throws JobPortalException {
         Optional<JobsEntity> existingJob = jobsRepository.findById(jobsDTO.getId());
 
-        System.out.println("Call reach in service");
         if(existingJob.isPresent()){
             throw new JobPortalException("EXISTED_JOB");
         }
+
         jobsDTO.setApplicantsList(new ArrayList<>());
         jobsDTO.setPostedTime(LocalDateTime.now());
         JobsEntity savedJob = jobsRepository.save(jobsDTO.toJobsEntity());
         return savedJob.toJobsDTO();
+    }
+
+    @Override
+    public List<JobsDTO> getAllJobs() {
+        List<JobsDTO> allJobs = jobsRepository.findAll().stream().map(job -> job.toJobsDTO()).toList();
+        return allJobs;
+    }
+
+    @Override
+    public JobsDTO getJobById(String id) throws JobPortalException {
+        Optional<JobsEntity> existingJob = jobsRepository.findById(id);
+
+        if(!existingJob.isPresent()){
+            throw new JobPortalException("JOB_NOT_EXISTED");
+        }
+
+        return existingJob.get().toJobsDTO();
     }
 }
